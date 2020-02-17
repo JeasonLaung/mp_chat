@@ -1,0 +1,183 @@
+function strtoarr(str) {
+  if (str) {
+    return str.split(',')
+  } else {
+    return []
+  }
+}
+function arrtostr(arr) {
+  return arr.join(',')
+}
+
+function includes(arr, item) {
+  if (!arr) {
+    return false
+  }
+  return arr.indexOf(item) > -1
+}
+
+// 权限规则
+function auth(auths, role) {
+  if (auths === false || auths === undefined) {
+    return true
+  }
+
+  if (auths.indexOf(role) > -1) {
+    return true
+  }
+
+  return false
+}
+
+function slice(str, start, end) {
+  if (end === undefined) {
+    return str.slice(start)
+  } else if (end === null) {
+    return str.slice(start, end) + '...'
+  } else {
+    return str.slice(start, end)
+  }
+}
+
+function toFixed(num, digit) {
+  var re = getRegExp('([0-9]+\.[0-9]{' + (digit || 2) + '})[0-9]*')
+  return num.replace(re, function (a, b) {return b})
+}
+
+// 聊天室时间
+function chattime(timestamps, todayTime) {
+  timestamps = timestamps * 1000
+  todayTime = todayTime * 1000
+  if(timestamps >= todayTime) {
+    /// 今天
+    return date(timestamps, 'hh:mm')
+  } else if (timestamps + 5 * 24 * 3600 * 1000 >= todayTime) {
+    /// 前5天
+    return '星期' + getWeekDay(timestamps) + date(timestamps, 'hh:mm')
+  } else {
+    /// 更早
+    return date(timestamps, 'yyyy-MM-dd hh:mm')
+  }
+}
+
+function wxtime(timestamps) {
+  timestamps = timestamps * 1000
+  let daySec, dayMin, dayHour, dayS
+  let timeNow = getDate().getTime()
+  let ts = (timeNow - timestamps) / 1000
+  dayS = Math.round(ts / (24 * 60 * 60))
+  dayHour = Math.round(ts / (60 * 60))
+  dayMin = Math.round(ts / 60)
+  daySec = Math.round(ts)
+  if (dayS > 0 && dayS < 2) {
+    return dayS + '天前'
+  } else if (dayS <= 0 && dayHour > 0) {
+    return dayHour + '小时前'
+  } else if (dayHour <= 0 && dayMin > 0) {
+    return dayMin + '分钟前'
+  } else if (dayMin <= 0 && daySec >= 0) {
+    return '现在'
+  } else {
+    let timestamp = getDate(timestamps)
+    return [timestamp.getFullYear(), timestamp.getMonth() + 1, timestamp.getDate()].join('/')
+  }
+}
+function disDate(start,finish) {
+  var dis = finish - start
+  var s,m,h,d = 0
+  if (dis < 60) {
+    s = dis
+  } else if (dis >= 60 && dis < 3600) {
+    s = dis % 60
+    m = parseInt(dis / 60)
+  } else if (dis >= 3600 && dis < 3600 * 24) {
+    // s = dis % 60
+    m = dis % 3600
+    h = parseInt(dis / 3600)
+  } else if (dis >= 3600 * 24) {
+    // s = dis % 60
+    // m = dis % 3600
+    h = dis % (3600 * 24)
+    d = parseInt(dis / (3600 * 24))
+  }
+  return (d ? d + '天' : '') + (h ? h + '小时' : '') + (m ? m + '分钟' : '') + (s ? s + '秒' : '')
+}
+
+function getWeekDay(timestamp) {
+  var weekDayCompare = ['日', '一', '二', '三', '四', '五', '六']
+  return weekDayCompare[getDate(timestamp).getDay()]
+}
+
+
+function toDistance (dis) {
+  if(!dis) return '0m'
+  return dis > 1000 ? ((dis / 1000) + 'km') : (dis + 'm')
+}
+
+function toNumber (num) {
+  return Number(num)
+}
+
+function toInt(num) {
+  return parseInt(num)
+}
+function toFloat(num) {
+  return parseFloat(num)
+}
+
+
+
+function date(timestamp, format) {
+  if (!format) {
+    format = "yyyy-MM-dd hh:mm:ss";
+  }
+  timestamp = parseInt(timestamp);
+  // 通过getDate()方法获取date类型的时间
+  var realDate = getDate(timestamp);
+  function timeFormat(num) {
+    return num < 10 ? '0' + num : num;
+  }
+  var date = [
+    ["y+", timeFormat(realDate.getFullYear())],
+    ["M+", timeFormat(realDate.getMonth() + 1)],
+    ["d+", timeFormat(realDate.getDate())],
+    ["h+", timeFormat(realDate.getHours())],
+    ["m+", timeFormat(realDate.getMinutes())],
+    ["s+", timeFormat(realDate.getSeconds())],
+    ["q+", Math.floor((realDate.getMonth() + 3) / 3)],
+    ["S+", realDate.getMilliseconds()],
+  ];
+  for (var i = 0; i < date.length; i++) {
+    var k = date[i][0];
+    var v = date[i][1];
+    // getRegExp初始化一个正则表达式对象
+    var reg = getRegExp("(" + k + ")").exec(format);
+    if (reg) {
+      format = format.replace(reg[1], v);
+    }
+  }
+  return format;
+}
+
+function timestamp () {
+  return getDate().getTime()
+}
+
+// module.exports.dateFormat = dateFormat
+
+module.exports.toFixed = toFixed
+module.exports.toDistance = toDistance
+module.exports.strtoarr = strtoarr
+module.exports.arrtostr = arrtostr
+module.exports.date = date
+module.exports.wxtime = wxtime
+module.exports.toFloat = toFloat
+module.exports.toInt = toInt
+module.exports.auth = auth
+module.exports.toNumber = toNumber
+module.exports.slice = slice
+module.exports.includes = includes
+module.exports.disDate = disDate
+module.exports.getWeekDay = getWeekDay
+module.exports.timestamp = timestamp
+module.exports.chattime = chattime

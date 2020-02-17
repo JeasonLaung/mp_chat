@@ -1,0 +1,51 @@
+<!--pages/chat/index.wxml-->
+<wxs src="../../wxs/index.wxs" module="m"></wxs>
+<view class="chat">
+  <!-- 状态栏一般高度位22 -->
+  <view style="width: 100%;position: fixed;z-index: 99;left: 0;;top: 0; min-height:{{statusBarHeight}}px;height:{{statusBarHeight}}px;background-color: #fff;"></view>
+
+  <!-- 头部 -->
+  <view class="chat-header" style="top: {{statusBarHeight}}px">
+    <view class="iconfont icon-back"></view>
+    <view class="chat-header-title">刘小兰</view>
+  </view>
+
+  <!-- 聊天 -->
+  <view class="chat-body">
+    <scroll-view
+    style="height: 100%;"
+    scroll-y>
+      <block wx:for="{{chatList}}" wx:key="index">
+        <!-- 隔5分钟内的不显示时间 -->
+        <view class="chat-body-time" wx:if="{{((chatList[index - 1] && ((item.create_time - 5 * 60) > chatList[index - 1].create_time))) || index == 0}}">{{m.chattime(item.create_time ,todayTimeStamp)}}</view>
+        <view class="chat-body-chat {{item.user_id == userInfo['id'] ? 'me' : 'other'}}">
+          <view class="chat-body-chat-avatar">
+            <image src="http://image.biaobaiju.com/uploads/20180803/23/1533308847-sJINRfclxg.jpeg"></image>
+          </view>
+          <view class="chat-body-chat-body">{{item.content}}</view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- 发送 -->
+  <view class="chat-footer">
+    <textarea
+    maxlength="-1"
+    value="{{text}}"
+    auto-height	
+    bindlinechange="bindlinechange"
+    bindinput="bindinput"
+    cursor-spacing="10"
+    style="max-height: 300rpx;"
+    />
+    <view class="chat-footer-tool">
+      <view class="iconfont icon-emoji"></view>
+      <view class="iconfont icon-roundadd" wx:if="{{!text}}"></view>
+      <view class="chat-footer-send" wx:else bindtap="bindsend">
+        发送
+      </view>
+    </view>
+    
+  </view>
+</view>
