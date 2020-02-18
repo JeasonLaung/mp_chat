@@ -4,6 +4,11 @@
     "pages/index/index",
     "pages/logs/logs"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "需要获取您的位置信息用于显示您所在位置"
+    }
+  },
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",

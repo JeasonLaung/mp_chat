@@ -18,8 +18,6 @@ page{
   height: 40px;
   border-bottom: 1rpx solid #f0f0f0;
   display: flex;
-  position: fixed;
-  z-index: 99;
   align-items: center;
   background: #fff;
   position: relative;
@@ -49,6 +47,9 @@ page{
 .chat-body-chat{
   padding-top: 20rpx;
 }
+.chat-body-chat:last-child{
+  padding-bottom: 20rpx
+}
 .chat-body-chat-avatar{
   padding: 0 20rpx 0 20rpx;
   min-height: 80rpx;
@@ -65,6 +66,7 @@ page{
 .chat-body-chat-body{
   position: relative;
   display: flex;
+  word-break: break-all;
   max-width: 450rpx;
   align-items: center;
   font-size: 30rpx;
@@ -118,23 +120,44 @@ page{
   font-size: 27rpx;
   color: #ccc;
 }
+.chat-body-chat-body_nopadding{
+  padding: 0!important;
+  background: transparent!important
+
+}
+.chat-body-chat-body_nopadding::after{
+  border-color: transparent!important
+}
+.chat-body-chat-body-location{
+  padding: 30rpx;
+  width: 300rpx;
+  background: #fff;
+  border-radius: 10rpx;
+}
+.chat-body-chat-body-location-text{
+  overflow: hidden;
+  margin-top: 20rpx;
+  font-size: 27rpx;
+  display: flex;
+  align-items: center;
+  color: #666;
+  text-overflow: ellipsis;
+  width: 320rpx;
+}
+.chat-body-chat-body-image{
+  max-height: 300rpx;
+  max-width: 300rpx
+}
 
 /* footer */
-.pre-chat-footer{
-  height: 44px;
-}
 .chat-footer{
   background-color: #f5f5f5;
-  padding: 10px;
   display: flex;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  align-items: flex-end;
-  z-index: 99;
+  align-items: center;
+  padding: 10px;
+  height: 30px
 }
-.chat-footer textarea{
+.chat-footer input{
   flex: 1;
   padding: 15rpx 20rpx;
   border-radius: 5rpx;
@@ -161,4 +184,67 @@ page{
   display: flex;
   padding-left: 10rpx;
   align-items: center;
+}
+
+
+/* 文件上传 */
+.expand-other{
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.expand-other-item{
+  margin: 25rpx
+}
+.expand-other-item .iconfont {
+  background: #fff;
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  font-size: 60rpx;
+  height: 50px;
+  width: 50px;
+
+}
+.expand-other-item .iconfont:active{
+  background: #ccc
+}
+.expand-other-item-text{
+  margin-top: 10rpx;
+  color: #555;
+  text-align: center;
+  font-size: 27rpx
+}
+
+
+.expand-emoji{
+  padding: 0 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+.expand-emoji-item{
+  width: 80rpx;
+  height: 80rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+}
+.expand-emoji-item:nth-child(1),
+.expand-emoji-item:nth-child(2),
+.expand-emoji-item:nth-child(3),
+.expand-emoji-item:nth-child(4),
+.expand-emoji-item:nth-child(5),
+.expand-emoji-item:nth-child(6),
+.expand-emoji-item:nth-child(7){
+  margin-top: 20px!important
+}
+
+
+.expand-emoji-item:last-child{
+  margin-bottom: 20px
+}
+.expand-emoji-item:nth-child(7n) {
+  margin: 0
 }
