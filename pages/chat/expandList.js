@@ -19,7 +19,7 @@ export const otherList = [
     icon: 'photo',
     title: '图片',
     func(obj) {
-      let timestamp = Math.round(new Date(date(new Date(), 'yyyy-MM-dd')).getTime() / 1000)
+      let timestamp = Math.round(Date.now() / 1000)
       wx.chooseImage({
         count: 9,
         success({ tempFilePaths }) {
@@ -68,6 +68,7 @@ export const otherList = [
     icon: 'locationfill',
     title: '位置',
     func(obj) {
+      let timestamp = Math.round(Date.now() / 1000)
       wx.chooseLocation({
         success: function(res) {
           const msg = {
@@ -77,10 +78,19 @@ export const otherList = [
             user_id: obj.data.userInfo['id'],
             latitude: res.latitude,
             longitude: res.longitude,
+            create_time: timestamp
           }
           obj.sendMsg(msg)
         },
       })
+    }
+  },
+
+  {
+    icon: 'myfill',
+    title: '名片',
+    func(obj) {
+      
     }
   }
 ]

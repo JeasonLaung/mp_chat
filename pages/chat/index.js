@@ -15,6 +15,13 @@ const data = [
     content: '你好'
   },
   {
+    id: 2,
+    create_time: 1581915722,
+    user_id: 21,
+    type: 'image',
+    content: 'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1582044961&di=114556faf956ff2a8c1e298840038d8f&src=http://b-ssl.duitang.com/uploads/item/201612/11/20161211183919_kQizH.thumb.700_0.png'
+  },
+  {
     id: 3,
     create_time: 1581915722,
     user_id: 20,
@@ -25,6 +32,13 @@ const data = [
   },
   {
     id: 4,
+    create_time: 1581915722,
+    user_id: 20,
+    content: '[e:12]'
+  },
+  {
+    id: 5,
+    type: 'card',
     create_time: 1581915722,
     user_id: 20,
     content: '[e:12]'
@@ -47,7 +61,7 @@ Page({
     /// 输入框是否焦点
     focus: false,
     /// 表情管理1和文件弹出2
-    expandShow: 1,
+    expandShow: 2,
 
     /// 更多列表
     otherList,
@@ -59,7 +73,7 @@ Page({
   onLoad(options) {
     let systemInfo = wx.getSystemInfoSync()
     let statusBarHeight = systemInfo.statusBarHeight
-    let todayTimeStamp = Math.round(new Date(date(new Date(), 'yyyy-MM-dd')).getTime() / 1000)
+    let todayTimeStamp = Math.round(new Date(date(new Date(), 'yyyy-MM-dd%00:00:00')).getTime() / 1000)
     this.setData({
       statusBarHeight,
       todayTimeStamp,
@@ -88,7 +102,7 @@ Page({
 
   bindsend() {
     const msg = {
-      create_time: Math.round(new Date(date(new Date(), 'yyyy-MM-dd')).getTime() / 1000),
+      create_time: Math.round(Date.now() / 1000),
       user_id: this.data.userInfo['id'],
       content: this.data.text
     }
@@ -127,7 +141,7 @@ Page({
     let { duration, height} = e.detail
     console.log(e)
     this.setData({
-      expandShow: false,
+      expandShow: 0,
       footerHeight: height + 50
     })
     this.toBottom()
@@ -145,33 +159,38 @@ Page({
 
   /// 表情切换
   toggleEmoji() {
-    /// 如果第二次点击表情,切换为键盘模式
-    if(this.data.expandShow == 1) {
-      this.setData({
-        expandShow: 0,
-        focus: true
-      })
-    } else {
-      this.setData({
-        expandShow: 1,
-        focus: false
-      })
-    }
-    
+    this.toBottom()
+    setTimeout(() => {
+      /// 如果第二次点击表情,切换为键盘模式
+      if (this.data.expandShow == 1) {
+        this.setData({
+          expandShow: 0,
+          focus: true
+        })
+      } else {
+        this.setData({
+          expandShow: 1,
+          focus: false
+        })
+      }
+    }, 100)
   },
   /// 文件切换
   toggleOther() {
-    if (this.data.expandShow == 2) {
-      this.setData({
-        expandShow: 0,
-        focus: true
-      })
-    } else {
-      this.setData({
-        expandShow: 2,
-        focus: false
-      })
-    }
+    this.toBottom()
+    setTimeout(() => {
+      if (this.data.expandShow == 2) {
+        this.setData({
+          expandShow: 0,
+          focus: true
+        })
+      } else {
+        this.setData({
+          expandShow: 2,
+          focus: false
+        })
+      }
+    }, 100)
   },
   bindblur(e) {
     this.setData({

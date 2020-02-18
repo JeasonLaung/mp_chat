@@ -176,7 +176,7 @@ page{
   filter: brightness(.9);
 }
 .chat-footer-tool .iconfont{
-  font-size: 52rpx;
+  font-size: 70rpx;
   padding: 5rpx;
   color: #111;
 }
@@ -189,16 +189,16 @@ page{
 
 /* 文件上传 */
 .expand-other{
-  padding: 20px;
+  padding: 10px 20px;
   display: flex;
   flex-wrap: wrap;
 }
 .expand-other-item{
-  margin: 25rpx
+  margin: 30rpx
 }
 .expand-other-item .iconfont {
   background: #fff;
-  border-radius: 40rpx;
+  border-radius: 30rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -207,6 +207,9 @@ page{
   height: 50px;
   width: 50px;
 
+}
+.expand-other-item .iconfont:nth-child(4n){
+  margin-right: 0
 }
 .expand-other-item .iconfont:active{
   background: #ccc
@@ -220,14 +223,15 @@ page{
 
 
 .expand-emoji{
-  padding: 0 20px 0;
   display: flex;
   flex-wrap: wrap;
+  overflow-x: hidden;
 
 }
 .expand-emoji-item{
-  width: 80rpx;
-  height: 80rpx;
+  width: 60rpx;
+  height: 60rpx;
+  padding: 5px;
   margin-right: 20rpx;
   margin-bottom: 20rpx;
 }
@@ -247,4 +251,7 @@ page{
 }
 .expand-emoji-item:nth-child(7n) {
   margin: 0
+}
+.expand-emoji-item:nth-child(7n + 1) {
+  margin-left: 20px
 }

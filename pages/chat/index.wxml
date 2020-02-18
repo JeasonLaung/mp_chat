@@ -2,10 +2,9 @@
 <wxs src="../../wxs/index.wxs" module="m"></wxs>
 <wxs module="m1">
   function changeEmoji(text) {
-    var re = getRegExp('\[e\:(\d+?)\]', 'g')
+    var re = getRegExp('\[e\:(\d{1,2})\]', 'g')
     return text.replace(re, function (a, b) {
-      console.log(b)
-      return '<img src="/assets/emojis/image_emoticon' + b +'.png"/>'
+      return '<img src="https://tb2.bdstatic.com/tb/editor/images/client/image_emoticon' + b +'.png"/>'
     })
   }
   module.exports.changeEmoji = changeEmoji
@@ -98,9 +97,9 @@
       bindtap="addEmoji"
       data-index="{{index}}"
       class="expand-emoji-item"
-      wx:for="{{91}}"
+      wx:for="{{50}}"
       wx:key="index"
-      src="/assets/emojis/image_emoticon{{index + 1}}.png"></image>
+      src="https://tb2.bdstatic.com/tb/editor/images/client/image_emoticon{{index + 1}}.png"></image>
     </scroll-view>
   </view>
   <!-- 文件管理 -->
