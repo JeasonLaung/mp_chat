@@ -44,6 +44,26 @@ function toFixed(num, digit) {
   return num.replace(re, function (a, b) {return b})
 }
 
+
+// 聊天列表时间
+function chatListTime(timestamps, todayTime) {
+  timestamps = timestamps * 1000
+  todayTime = todayTime * 1000
+  if (timestamps >= todayTime) {
+    /// 今天
+    return date(timestamps, 'hh:mm')
+  } else if (timestamps + 1 * 24 * 3600 * 1000 >= todayTime) {
+    /// 昨天
+    return '昨天 ' + date(timestamps, 'hh:mm')
+  } else if (timestamps + 5 * 24 * 3600 * 1000 >= todayTime) {
+    /// 前5天
+    return '星期' + getWeekDay(timestamps) + ' ' + date(timestamps, 'hh:mm')
+  } else {
+    /// 更早
+    return date(timestamps, 'yyyy-MM-dd')
+  }
+}
+
 // 聊天室时间
 function chattime(timestamps, todayTime) {
   timestamps = timestamps * 1000
@@ -51,6 +71,9 @@ function chattime(timestamps, todayTime) {
   if(timestamps >= todayTime) {
     /// 今天
     return date(timestamps, 'hh:mm')
+  } else if (timestamps + 1 * 24 * 3600 * 1000 >= todayTime) {
+    /// 昨天
+    return '昨天 ' + date(timestamps, 'hh:mm')
   } else if (timestamps + 5 * 24 * 3600 * 1000 >= todayTime) {
     /// 前5天
     return '星期' + getWeekDay(timestamps) + ' ' + date(timestamps, 'hh:mm')
@@ -181,3 +204,4 @@ module.exports.disDate = disDate
 module.exports.getWeekDay = getWeekDay
 module.exports.timestamp = timestamp
 module.exports.chattime = chattime
+module.exports.chatListTime = chatListTime

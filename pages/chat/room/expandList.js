@@ -1,4 +1,4 @@
-import {date } from '../../utils/index.js'
+import {date } from '../../../utils/index.js'
 const upload = (url) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {

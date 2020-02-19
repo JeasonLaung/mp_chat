@@ -1,119 +1,17 @@
 <!--pages/chat/index.wxml-->
-<wxs src="../../wxs/index.wxs" module="m"></wxs>
-<wxs module="m1">
-  function changeEmoji(text) {
-    var re = getRegExp('\[e\:(\d{1,2})\]', 'g')
-    return text.replace(re, function (a, b) {
-      return '<img src="https://tb2.bdstatic.com/tb/editor/images/client/image_emoticon' + b +'.png"/>'
-    })
-  }
-  module.exports.changeEmoji = changeEmoji
-</wxs>
-<view class="chat">
-  <!-- 状态栏一般高度位22 -->
-  <view style="min-height:{{statusBarHeight}}px;height:{{statusBarHeight}}px;background-color: #fff;"></view>
-
-  <!-- 头部 -->
-  <view class="chat-header">
-    <view class="iconfont icon-back"></view>
-    <view class="chat-header-title">刘小兰</view>
-  </view>
-
-  <!-- 聊天 -->
-  <scroll-view
-  bindtap="bindblur"
-  scroll-into-view="{{scrollIntoView}}"
-  style="height: calc(100vh - {{statusBarHeight || 0}}px - 40.5px - {{footerHeight || 0}}px - {{expandShow ? expandHeight : 0}}px)"
-  scroll-y>
-    <block wx:for="{{chatList}}" wx:key="index">
-      <!-- 隔5分钟内的不显示时间 -->
-      <view class="chat-body-time" wx:if="{{((chatList[index - 1] && ((item.create_time - 5 * 60) > chatList[index - 1].create_time))) || index == 0}}">{{m.chattime(item.create_time ,todayTimeStamp)}}</view>
-      <view 
-      id="chat-id-{{index}}"
-      class="chat-body-chat {{item.user_id == userInfo['id'] || !item.user_id ? 'me' : 'other'}}">
-        <!-- 头像 -->
-        <view class="chat-body-chat-avatar">
-          <image src="http://image.biaobaiju.com/uploads/20180803/23/1533308847-sJINRfclxg.jpeg"></image>
-        </view>
-        <!-- 内容 -->
-        <view 
-        class="chat-body-chat-body {{item.type && item.type != 'text' ? 'chat-body-chat-body_nopadding' : ''}}"
-        >
-          <!-- 图片内容 -->
-          <image wx:if="{{item.type == 'image'}}" src="{{item.content}}" mode="aspectFit" bindtap="previewImage" data-current="{{item.content}}" class="chat-body-chat-body-image"></image>
-          <!-- 位置内容 -->
-          <view 
-          bindtap="openLocation"
-          data-address="{{item.address}}"
-          data-name="{{item.name}}"
-          data-latitude="{{item.latitude}}"
-          data-longitude="{{item.longitude}}"
-          wx:elif="{{item.type == 'location'}}" class="chat-body-chat-body-location">
-            <image src="/assets/images/maps.png" mode='widthFix' style="width: 100%;height: 290rpx;"></image>
-            <view class="chat-body-chat-body-location-text">
-              <view class="iconfont icon-locationfill"></view>
-              {{item.name || item.address}}
-            </view>
-          </view>
-
-          <!-- 文字内容 -->
-          <rich-text wx:else nodes="{{m1.changeEmoji(item.content)}}"></rich-text>
-        </view>
-      </view>
-    </block>
-  </scroll-view>
-
-  <!-- 发送 -->
-  <view class="chat-footer">
-    <input
-    maxlength="-1"
-    focus="{{focus}}"
-    value="{{text}}"
-    bindinput="bindinput"
-    bindconfirm="bindsend"
-    cursor-spacing="30rpx"
-    adjust-position="{{false}}"
-    confirm-type="send"
-    bindblur="bindblur"
-    bindkeyboardheightchange="bindkeyboardheightchange"
-    />
-    <view class="chat-footer-tool">
-      <view class="iconfont icon-{{expandShow == 1 ? 'keyboard' : 'emoji'}}" bindtap="toggleEmoji"></view>
-      <view class="iconfont icon-roundadd" wx:if="{{!text}}" bindtap="toggleOther"></view>
-      <view class="chat-footer-send" wx:else bindtap="bindsend">
-        发送
-      </view>
+<wxs module="m" src="../../wxs/index.wxs"></wxs>
+<view 
+bindtap='navigateTo'
+data-url="/pages/chat/room/index"
+class="chat-person" wx:for="{{userList}}" wx:key="index">
+  <image class="chat-person-avatar" src="{{item.avatar}}"></image>
+  <view class="chat-person-body">
+    <view class="chat-person-body-top">
+      <view class="chat-person-body-name">{{item.name}}</view>
+      <view class="chat-person-body-time">{{m.chatListTime(item.create_time,todayTimeStamp)}}</view>
     </view>
-  </view>
-
-  <!-- 表情管理 -->
-  <view wx:if="{{expandShow == 1}}">
-    <scroll-view
-    style="height: {{expandHeight}}px"
-    enable-flex="{{true}}"
-    scroll-y
-    class='expand-emoji'>
-      <image 
-      bindtap="addEmoji"
-      data-index="{{index}}"
-      class="expand-emoji-item"
-      wx:for="{{50}}"
-      wx:key="index"
-      src="https://tb2.bdstatic.com/tb/editor/images/client/image_emoticon{{index + 1}}.png"></image>
-    </scroll-view>
-  </view>
-  <!-- 文件管理 -->
-  <view wx:if="{{expandShow == 2}}">
-    <view class='expand-other'>
-      <view class="expand-other-item" wx:for="{{otherList}}" wx:key="index">
-        <view class="iconfont icon-{{item.icon}}" bindtap="otherBindTap" data-index="{{index}}"></view>
-        <view class="expand-other-item-text">{{item.title}}</view>
-      </view>
+    <view class="chat-person-body-bottom">
+      <view class="chat-person-body-content">{{item.last_content}}</view>
     </view>
-    <!-- <swiper>
-      <swiper-item class="">
-        <view></view>
-      </swiper-item>
-    </swiper> -->
   </view>
 </view>
