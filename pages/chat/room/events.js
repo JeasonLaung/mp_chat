@@ -1,6 +1,13 @@
 const voiceReciver = wx.getRecorderManager()
 const voicePlayer = wx.createInnerAudioContext()
 const fileManager = wx.getFileSystemManager()
+const uploadVoice = (url) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(url)
+    }, 1500)
+  })
+}
 export default {
   data: {
     voiceTime: 0,
@@ -23,7 +30,7 @@ export default {
       let option = {
         sampleRate: 16000,
         numberOfChannels: 1,
-        format: 'wav', //录音的格式，有aac和mp3两种   
+        format: 'mp3', //录音的格式，有aac和mp3两种   
       }
       voiceReciver.start(option); //开始录音   这么写的话，之后录音得到的数据，就是你上面写得数据。
       wx.showToast({
@@ -88,8 +95,11 @@ export default {
         var duration = res.duration
         var fileSize = res.fileSize
 
-        
-        
+        uploadVoice(soundSrc).then(url => {
+          _this.sendMsg({
+            
+          })
+        })
       })
     },
     playVoice(e) {
@@ -123,6 +133,11 @@ export default {
       })
       /// 结束的话不播放
       voicePlayer.onEnded((res) => {
+        this.setData({
+          playVoiceId: 0
+        })
+      })
+      voicePlayer.onStop((res) => {
         this.setData({
           playVoiceId: 0
         })

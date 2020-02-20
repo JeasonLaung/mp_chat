@@ -131,12 +131,14 @@ Page({
     if(add) {
       this.data.chatList.push(msg)
     }
+    if(!msg['create_time']) {
+      msg['create_time'] = Math.round(Date.now() / 1000)
+    }
     this.setData({
       chatList: this.data.chatList
     })
     this.toBottom()
 
-    
     // websocket发送
     // JSON.stringify(obj)
     

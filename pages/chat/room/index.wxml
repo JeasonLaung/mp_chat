@@ -104,7 +104,8 @@
     catchtouchmove='soundmove'
     catchtouchend='soundend'
     catchtouchcancel='soundcancel'
-    wx:else class="chat-footer-sound">
+    wx:else 
+    class="chat-footer-sound">
       按住说话
     </view>
     <view class="chat-footer-tool">
