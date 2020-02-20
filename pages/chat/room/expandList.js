@@ -29,7 +29,9 @@ export const otherList = [
               create_time: timestamp,
               type: 'image',
               user_id: obj.data.userInfo['id'],
-              content: tempFilePaths[i],
+              content: {
+                url: tempFilePaths[i],
+              },
               uploaded: false
             })
             upload(tempFilePaths[i]).then((url) => {
@@ -73,12 +75,13 @@ export const otherList = [
         success: function(res) {
           const msg = {
             type: 'location',
-            address: res.address,
-            name: res.name,
             user_id: obj.data.userInfo['id'],
-            latitude: res.latitude,
-            longitude: res.longitude,
-            create_time: timestamp
+            content: {
+              address: res.address,
+              name: res.name,
+              latitude: res.latitude,
+              longitude: res.longitude
+            }
           }
           obj.sendMsg(msg)
         },
@@ -91,6 +94,15 @@ export const otherList = [
     title: '名片',
     func(obj) {
       
+    }
+  },
+  {
+    icon: 'mobile',
+    title: '拨号',
+    func(obj) {
+      wx.makePhoneCall({
+        phoneNumber: '18680026210',
+      })
     }
   }
 ]

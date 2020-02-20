@@ -1,0 +1,6 @@
+<!--components/list-group/index.wxml-->
+<view class="weui-cells__title">{{title}}</view>
+
+<view class="weui-cells weui-cells_after-title">
+    <slot />
+</view>

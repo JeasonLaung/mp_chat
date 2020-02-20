@@ -2,12 +2,14 @@
 <wxs module="m" src="../../wxs/index.wxs"></wxs>
 <view 
 bindtap='navigateTo'
+data-index="{{index}}"
+catchlongpress="personActionSheet"
 data-url="/pages/chat/room/index"
 class="chat-person" wx:for="{{userList}}" wx:key="index">
   <image class="chat-person-avatar" src="{{item.avatar}}"></image>
   <view class="chat-person-body">
     <view class="chat-person-body-top">
-      <view class="chat-person-body-name">{{item.name}}</view>
+      <view class="chat-person-body-name">{{item.user_name}}</view>
       <view class="chat-person-body-time">{{m.chatListTime(item.create_time,todayTimeStamp)}}</view>
     </view>
     <view class="chat-person-body-bottom">

@@ -1,0 +1,4 @@
+/* components/list/index.wxss */
+.weui-cell{
+  background-color: #fff
+}

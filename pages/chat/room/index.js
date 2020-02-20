@@ -7,7 +7,7 @@ const data = [
     id:1,
     create_time: 1581915722,
     user_id: 20,
-    content: '你好呀[e: 12]'
+    content: '你好呀[e:12]'
   },
   {
     id:2,
@@ -20,23 +20,30 @@ const data = [
     create_time: 1581915722,
     user_id: 21,
     type: 'image',
-    content: 'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1582044961&di=114556faf956ff2a8c1e298840038d8f&src=http://b-ssl.duitang.com/uploads/item/201612/11/20161211183919_kQizH.thumb.700_0.png'
+    content: {
+      url: 'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1582044961&di=114556faf956ff2a8c1e298840038d8f&src=http://b-ssl.duitang.com/uploads/item/201612/11/20161211183919_kQizH.thumb.700_0.png'
+    }
   },
   {
     id: 3,
     create_time: 1581915722,
     user_id: 20,
     type: 'location',
-    address: '巨盛花园',
-    latitude: '22.0002',
-    longitude: '113.0000'
+    content: {
+      address: '巨盛花园',
+      latitude: '22.0002',
+      longitude: '113.0000'
+    },
   },
   {
     id: 4,
     create_time: 1581915722,
-    user_id: 20,
+    user_id: 21,
     type: 'voice',
-    content: 'http://jeason2020.xyz/static/mp3/1.mp3'
+    content: {
+      url: 'http://jeason2020.xyz/static/mp3/1.mp3',
+      duration: 4
+    }
   },
 ]
 Page({
@@ -91,6 +98,39 @@ Page({
       })
     }).exec()
   },
+  contentActionSheet(e) {
+    let _this = this
+    let now = Math.round(Date.now() / 1000)
+    let {index} = e.currentTarget.dataset
+    let chat = this.data.chatList[index]
+    let itemList = [
+    ]
+    if (chat['type'] == 'text' || !chat['type']) {
+      itemList.push('复制')
+    }
+    if (chat['create_time'] > now - 2 * 60) {
+      itemList.push('撤回')
+    }
+    wx.showActionSheet({
+      itemList,
+      success({tapIndex}) {
+        switch(tapIndex) {
+          case 0:
+            _this.copy(_this.data.chatList[index]['content'] || '')
+            break
+          case 1:
+            _this.data.chatList.splice(index)
+            _this.setData({
+              chatList: _this.data.chatList
+            })
+            
+            break
+        }
+      }
+    })
+  },
+
+
   otherBindTap(e) {
     // console.log(e)
     let {index} = e.currentTarget.dataset
@@ -112,7 +152,10 @@ Page({
   },
 
   bindsend() {
-    const msg = {
+    if(!this.data.text) {
+      return false
+    }
+    const msg = { 
       create_time: Math.round(Date.now() / 1000),
       user_id: this.data.userInfo['id'],
       content: this.data.text
@@ -127,21 +170,24 @@ Page({
 
   ///发送消息
   sendMsg(msg, add = true) {
+    let index = -1
     /// 是否新增一个
     if(add) {
-      this.data.chatList.push(msg)
+      index = this.data.chatList.push(msg)
     }
-    if(!msg['create_time']) {
-      msg['create_time'] = Math.round(Date.now() / 1000)
-    }
+    msg['create_time'] = Math.round(Date.now() / 1000)
+    msg['user_id'] = this.data.userInfo.id
+    // msg['to_user_id'] = this.data.userInfo.id
     this.setData({
       chatList: this.data.chatList
     })
     this.toBottom()
 
+
     // websocket发送
     // JSON.stringify(obj)
-    
+
+    return index
   },
 
   toBottom() {
@@ -244,7 +290,23 @@ Page({
       delta: 1,
     })
   },
-
+  copy(str) {
+    wx.setClipboardData({
+      data: str,
+      success(res) {
+        wx.showToast({
+          title: '复制成功'
+        })
+      },
+      fail(e) {
+        console.log(e)
+        wx.showToast({
+          title: '复制失败',
+          icon: 'none'
+        })
+      }
+    })
+  },
 
   /// 展示位置
   openLocation(e) {

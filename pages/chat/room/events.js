@@ -8,15 +8,21 @@ const uploadVoice = (url) => {
     }, 1500)
   })
 }
+let timer = null
+
 export default {
   data: {
     voiceTime: 0,
     voice: null,
     showVoice: false,
     playVoiceTime: 0,
+
+    voiceIsStart: false,
     
-    /// 当前voice播放的id
+    /// 当前voice播放的id(以创建时间为准)
     playVoiceId: 0,
+    /// 当前播放时间
+    playVoiceTime: 0,
 
     result: '',
     // 录音按钮大小
@@ -37,6 +43,9 @@ export default {
         title: '正在录音',
         icon: 'loading',
         duration: 100000
+      })
+      this.setData({
+        voiceIsStart: true
       })
       /// 振动
       wx.vibrateShort({
@@ -59,7 +68,6 @@ export default {
         })
       } else {
         this.data.isCancel = false
-        wx.hideToast()
         wx.showToast({
           title: '正在录音',
           icon: 'loading',
@@ -68,17 +76,24 @@ export default {
       }
     },
     soundcancel(e) {
+      this.setData({
+        voiceIsStart: false
+      })
     },
     soundend(e) {
       let _this = this
       wx.hideToast()
       console.log('结束')
       voiceReciver.stop();
-      if (this.data.isCancel) {
-        this.data.isCancel = false
-        return false
-      }
+      this.setData({
+        voiceIsStart: false
+      })
       voiceReciver.onStop((res) => {
+        /// 是否取消的
+        if (this.data.isCancel) {
+          this.data.isCancel = false
+          return false
+        }
         // console.log(res) //这里是必须写完成事件的，因为最后的文件，就在这里面；
         let time = parseInt(res.duration / 1000);
         this.setData({
@@ -92,32 +107,60 @@ export default {
         // res.fileSize;//文件的大小
 
         var soundSrc = res.tempFilePath
-        var duration = res.duration
+        var duration = Math.round(res.duration / 1000)
         var fileSize = res.fileSize
 
+        var index = _this.sendMsg({
+          type: 'voice',
+          content: {
+            url: soundSrc,
+            duration
+          }
+        })
+        /// 上传语音
         uploadVoice(soundSrc).then(url => {
-          _this.sendMsg({
-            
-          })
+          // _this.data.chatList[index].uploaded = true
+          // _this.setData({
+          //   chatList = _this.data.chatList
+          // })
         })
       })
     },
     playVoice(e) {
       let _this = this
       let voice = e.currentTarget.dataset.url
+      let index = e.currentTarget.dataset.index
       let playVoiceId = e.currentTarget.dataset.id
+      clearInterval(timer)
       /// 如果开始存在的话我会停止之前的
       if (this.data.playVoiceId) {
         voicePlayer.stop()
       }
+      console.log(index)
+      console.log(_this.data.chatList)
+      let playVoiceTime = _this.data.chatList[index]['content']['duration']
+
       this.setData({
-        playVoiceId
+        playVoiceId,
+        playVoiceTime
       })
       
       voicePlayer.src = voice
       voicePlayer.play()
+      
       voicePlayer.onPlay(() => {
         console.log('开始播放')
+        timer = setInterval(() => {
+          playVoiceTime = playVoiceTime - 1
+          if (playVoiceTime < 0) {
+            playVoiceTime = 0
+            clearInterval(timer)
+            return false
+          }
+          _this.setData({
+            playVoiceTime,
+          })
+        }, 1000)
         // let timer = setInterval(() => {
         //   if (_this.data.playVoiceTime == 1) {
         //     clearInterval(timer)
@@ -133,11 +176,6 @@ export default {
       })
       /// 结束的话不播放
       voicePlayer.onEnded((res) => {
-        this.setData({
-          playVoiceId: 0
-        })
-      })
-      voicePlayer.onStop((res) => {
         this.setData({
           playVoiceId: 0
         })

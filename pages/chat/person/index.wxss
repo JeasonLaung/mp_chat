@@ -1,0 +1,23 @@
+/* pages/chat/person/index.wxss */
+page{
+  background: #f2f2f2
+}
+
+.person-header{
+  padding: 50rpx 20rpx 50rpx;
+  border-bottom: 1rpx solid #f2f2f2;
+  
+}
+
+
+
+.person-tool{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: calc(100% - 40rpx);
+  margin: auto;
+  padding: 20rpx;
+  border-top: 1rpx solid #f2f2f2;
+}

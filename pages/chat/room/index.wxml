@@ -39,38 +39,43 @@
         </view>
         <!-- 内容 -->
         <view 
+        data-index="{{index}}"
+        data-id="{{item.id}}"
+        bindlongpress="contentActionSheet"
         class="chat-body-chat-body {{item.type && item.type != 'text' && item.type != 'voice' ? 'chat-body-chat-body_nopadding' : ''}}"
         >
           <!-- 图片内容 -->
           <image 
           data-id="{{item.id}}"
-          wx:if="{{item.type == 'image'}}" src="{{item.content}}" mode="aspectFit" bindtap="previewImage" data-current="{{item.content}}" class="chat-body-chat-body-image"></image>
+          wx:if="{{item.type == 'image'}}" src="{{m.json(item.content).url}}" mode="aspectFit" bindtap="previewImage" data-current="{{m.json(item.content).url}}" class="chat-body-chat-body-image"></image>
           <!-- 位置内容 -->
           <view 
           data-id="{{item.id}}"
           bindtap="openLocation"
-          data-address="{{item.address}}"
-          data-name="{{item.name}}"
-          data-latitude="{{item.latitude}}"
-          data-longitude="{{item.longitude}}"
+          data-address="{{m.json(item.content).address}}"
+          data-name="{{m.json(item.content).name}}"
+          data-latitude="{{m.json(item.content).latitude}}"
+          data-longitude="{{m.json(item.content).longitude}}"
           wx:elif="{{item.type == 'location'}}" class="chat-body-chat-body-location">
             <image src="/assets/images/maps.png" mode='widthFix' style="width: 100%;height: 290rpx;"></image>
             <view class="chat-body-chat-body-location-text">
               <view class="iconfont icon-locationfill"></view>
-              {{item.name || item.address}}
+              {{m.json(item.content).name || m.json(item.content).address}}
             </view>
           </view>
           <!-- 语音信息 -->
           <view 
-          data-id="{{item.id}}"
-          data-url="{{item.content}}"
+          data-id="{{item.create_time + item.user_id}}"
+          data-url="{{m.json(item.content).url}}"
           bindtap="playVoice"
+          data-index="{{index}}"
           wx:elif="{{item.type == 'voice'}}" 
-          class="chat-body-chat-body-voice {{playVoiceId == item.id ? 'active' : ''}}">
+          class="chat-body-chat-body-voice {{playVoiceId == (item.create_time + item.user_id) ? 'active' : ''}}">
             <view 
             class="iconfont icon-speech"
             ></view>
-            11'
+            <view wx:if="{{playVoiceId != (item.create_time + item.user_id)}}">{{m.json(item.content).duration}}'</view>
+            <view wx:else>{{playVoiceTime}}'</view>
           </view>
           <!-- 文字内容 -->
           <rich-text 
@@ -100,13 +105,13 @@
     />
     <view 
     id="speech"
-    catchtouchstart='soundstart'
-    catchtouchmove='soundmove'
-    catchtouchend='soundend'
-    catchtouchcancel='soundcancel'
+    bindtouchstart='soundstart'
+    bindtouchmove='soundmove'
+    bindtouchend='soundend'
+    bindtouchcancel='soundcancel'
     wx:else 
     class="chat-footer-sound">
-      按住说话
+      {{voiceIsStart ? '正在说话' : '按住说话'}}
     </view>
     <view class="chat-footer-tool">
       <view class="iconfont icon-{{expandShow == 1 ? 'keyboard' : 'emoji'}}" bindtap="toggleEmoji"></view>

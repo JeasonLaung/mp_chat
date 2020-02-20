@@ -222,9 +222,12 @@ page{
 
 /* 文件上传 */
 .expand-other{
-  padding: 10px 20px;
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
+}
+.expand-other-item:nth-child(4n) {
+  margin-right: 0
 }
 .expand-other-item{
   margin: 30rpx

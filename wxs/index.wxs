@@ -186,6 +186,13 @@ function timestamp () {
   return getDate().getTime()
 }
 
+function json (str) {
+  if(typeof str == 'object') {
+    return str
+  }
+  return JSON.parse(str)
+}
+
 // module.exports.dateFormat = dateFormat
 
 module.exports.toFixed = toFixed
@@ -205,3 +212,4 @@ module.exports.getWeekDay = getWeekDay
 module.exports.timestamp = timestamp
 module.exports.chattime = chattime
 module.exports.chatListTime = chatListTime
+module.exports.json = json

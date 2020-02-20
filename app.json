@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/chat/person/index",
     "pages/chat/room/index",
     "pages/chat/index",
     "pages/index/index",
@@ -8,7 +9,14 @@
   "permission": {
     "scope.userLocation": {
       "desc": "需要获取您的位置信息用于显示您所在位置"
+    },
+    "scope.record": {
+      "desc": "需要获取您的录音权限用于语音功能"
     }
+  },
+  "usingComponents": {
+    "we-cell": "./components/cell/index",
+    "we-cell-group": "./components/cell-group/index"
   },
   "window": {
     "backgroundTextStyle": "light",

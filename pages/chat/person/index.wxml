@@ -1,0 +1,22 @@
+<!--pages/chat/person/index.wxml-->
+<view class="person-page" wx:if="{{show}}">
+  <view class="person-header">
+    <view class="person-header-avatar">
+    </view>
+
+    <view class="person-header-avatar">
+    </view>
+  </view>
+
+  <we-cell
+  is-link
+  value="123"
+  title="title"></we-cell>
+
+  <!-- <view class="person-tool">
+    p
+  </view> -->
+</view>
+<view wx:else class="page-center">
+  <i-spin></i-spin>
+</view>
