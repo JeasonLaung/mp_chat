@@ -19,6 +19,10 @@ Component({
     isLink: {
       type: Boolean,
       value: false
+    },
+    url: {
+      type: String,
+      value: ""
     }
   },
 

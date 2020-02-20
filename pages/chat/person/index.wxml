@@ -2,17 +2,21 @@
 <view class="person-page" wx:if="{{show}}">
   <view class="person-header">
     <view class="person-header-avatar">
+      <image src="http://img2.imgtn.bdimg.com/it/u=4145052645,1255376937&fm=26&gp=0.jpg"></image>
     </view>
 
-    <view class="person-header-avatar">
+    <view class="person-header-info">
+      <view class="person-header-info-name">
+        蔡依林
+        <view style='width:20rpx'></view>
+        <view class="iconfont icon-myfill" style='color: skyblue'></view>
+      </view>
+      <view class="person-header-info-list">公司: 喜羊羊科技有限公司</view>
+      <view class="person-header-info-list">电话: 18680026210</view>
     </view>
+
+    <view class="iconfont icon-unfold"></view>
   </view>
-
-  <we-cell
-  is-link
-  value="123"
-  title="title"></we-cell>
-
   <!-- <view class="person-tool">
     p
   </view> -->

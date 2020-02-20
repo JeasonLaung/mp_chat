@@ -2,11 +2,46 @@
 page{
   background: #f2f2f2
 }
-
+/* 头 */
 .person-header{
-  padding: 50rpx 20rpx 50rpx;
+  position: relative;
+  padding: 20rpx 30rpx 50rpx;
   border-bottom: 1rpx solid #f2f2f2;
+  display: flex;
+  background: #fff;
   
+}
+.person-header-avatar{
+  height: 150rpx;
+  width: 150rpx;
+}
+.person-header-avatar image{
+  border-radius: 20rpx;
+  height: 100%;
+  width: 100%;
+}
+.person-header-info{
+  padding-left:40rpx
+}
+.person-header-info-name{
+  display: flex;
+  font-size: 40rpx;
+  font-weight: bold;
+  line-height: 1.6;
+  margin-bottom: 10rpx;
+  align-items: center
+}
+.person-header-info-list{
+  line-height: 1.6;
+  color: #777;
+  font-size: 27rpx
+}
+.iconfont.icon-unfold{
+  position: absolute;
+  right: 40rpx;
+  top: -20rpx;
+  font-size: 50rpx;
+  font-weight: bold;
 }
 
 

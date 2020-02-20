@@ -1,5 +1,5 @@
 <!--components/list/index.wxml-->
-<navigator class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+<view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
     <view class="weui-cell__hd">
         <image 
         wx:if="{{icon}}"
@@ -8,4 +8,4 @@
     </view>
     <view class="weui-cell__bd">{{title}}</view>
     <view class="weui-cell__ft {{isLink ? 'weui-cell__ft_in-access' : ''}}">{{value}}</view>
-</navigator>
+</view>

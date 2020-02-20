@@ -4,10 +4,6 @@ Component({
     addGlobalClass: true
   },
   properties: {
-    isLink: {
-      type: Boolean,
-      value: true
-    }
   },
 
   /**
